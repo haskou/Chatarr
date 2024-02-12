@@ -93,7 +93,6 @@ export class TelegramClient implements MessengerClient {
       replyMesage: null,
     });
     this.save();
-    
   }
   public async connect(): Promise<MessengerClient> {
     this.client = new TelegramBot(this.config.telegram.token);
@@ -112,6 +111,7 @@ export class TelegramClient implements MessengerClient {
     const emitter = new MessengerMessageEmitter();
 
     this.client.addListener('message', async (message) => {
+      if (!message.text || message.text == 'undefined') return;
       // Check if the message comes from a confinament channel
       const isDM = !message.group_chat_created;
       if (
@@ -149,7 +149,7 @@ export class TelegramClient implements MessengerClient {
     channelId: string,
     maxHistory: number,
   ): Promise<Message[]> {
-    return this.channels[channelId].messages?.slice(0, maxHistory) || [];
+    return this.channels[channelId].messages?.slice(maxHistory * -1) || [];
   }
   public async setIsTypping(channelId: string): Promise<void> {
     this.client.sendChatAction(channelId, 'typing');

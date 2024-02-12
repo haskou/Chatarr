@@ -69,7 +69,12 @@ export class BotBehavior {
   public async processMessage(message: Message): Promise<void> {
     this.debounceMessage(message.channelId, async () => {
       // Ignore own messages
-      if (message.username == this.character.name) return;
+      if (
+        message.username
+          .toLocaleLowerCase()
+          .includes(this.character.name.toLocaleLowerCase())
+      )
+        return;
 
       if (message.content == 'stopLoop') {
         const responses = await this.aiProvider.generateResponses(
