@@ -127,11 +127,11 @@ export class TelegramClient implements MessengerClient {
     const channel = await this.client.getChat(channelId);
     return [
       ...new Set(
-        (this.channels[channelId].usernames || []).concat(
+        (this.channels[channelId]?.usernames || []).concat(
           channel.active_usernames,
         ),
       ),
-    ];
+    ].filter((u) => !!u);
   }
   public async getHistory(
     channelId: string,

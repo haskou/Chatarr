@@ -71,6 +71,7 @@ export class OpenRouterService implements AIProvider {
       }),
       stop: this.defaultParameters.stop.concat(
         ...usernames.map((u) => `${u}:`),
+        ...usernames.map((u) => `*${u}*`),
       ),
     });
 
