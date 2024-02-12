@@ -57,8 +57,7 @@ export class OpenRouterService implements AIProvider {
 
       messages.push({
         role: 'user',
-        name:
-          message.username == character.name ? 'assistant' : message.username,
+        name: message.username,
         // content: `${message.date.toISOString()} ${historyMessage.trim()}`,
         content: `${historyMessage.trim()}`,
       });

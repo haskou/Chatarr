@@ -11,6 +11,7 @@ export class BotBehavior {
   private readonly debounceTimer: Record<string, NodeJS.Timeout> = {};
   private readonly dmPrompt = `This is a private chat. `;
   private memoryManager: ConceptualMemory;
+  private isPrompting = false;
 
   public lastResponse = {};
 
@@ -72,8 +73,14 @@ export class BotBehavior {
 
   public async processMessage(message: Message): Promise<void> {
     this.debounceMessage(message.channelId, async () => {
+      if (this.isPrompting) return;
       // Ignore own messages
-      if (message.username == (await this.messengerClient.getUsername()))
+      if (
+        [
+          await this.messengerClient.getUsername(),
+          this.character.name,
+        ].includes(message.username)
+      )
         return;
 
       if (message.content == 'stopLoop') {
@@ -115,6 +122,7 @@ export class BotBehavior {
       forcedMemory += '. ';
 
       // Get bot responses
+      this.isPrompting = true;
       const responses = await this.aiProvider.generateResponses(
         this.character,
         forcedMemory,
@@ -124,6 +132,7 @@ export class BotBehavior {
       );
 
       await this.sendResponses(message.channelId, responses);
+      this.isPrompting = false;
     });
   }
 
