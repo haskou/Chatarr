@@ -81,11 +81,23 @@ export class TelegramClient implements MessengerClient {
   }
   public async sendMessage(message: string, channelId: string): Promise<void> {
     await this.client.sendMessage(channelId, message);
+    this.channels[channelId].messages.push({
+      channelId: channelId,
+      content: message,
+      date: new Date(),
+      isDM: this.channels[channelId].isDM,
+      isMentioned: false,
+      isReplied: false,
+      username: (await this.client.getMe()).username,
+      replyAuthor: null,
+      replyMesage: null,
+    });
+    this.save();
+    
   }
   public async connect(): Promise<MessengerClient> {
-    this.client = new TelegramBot(this.config.telegram.token, {
-      polling: true,
-    });
+    this.client = new TelegramBot(this.config.telegram.token);
+    this.client.startPolling();
     await this.load();
     return this;
   }

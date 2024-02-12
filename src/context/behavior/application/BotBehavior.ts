@@ -38,7 +38,7 @@ export class BotBehavior {
       // Give user time to write
       if (await this.messengerClient.isTypping(channel)) {
         console.log('stopu');
-        return this.debounceMessage(channel, func, delay * 10);
+        return await this.debounceMessage(channel, func, delay * 10);
       }
       await func();
     }, delay);
