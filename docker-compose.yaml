@@ -1,0 +1,21 @@
+version: '3.8'
+services:
+  # koboldcpp:
+  #   build:
+  #     context: /data/dockerSSD/koboldcpp/
+  #     dockerfile: Dockerfile
+  #   container_name: koboldcpp
+  #   volumes:
+  #     - '/data/dockerSSD/koboldcpp/models:/app/models'
+  #   ports:
+  #     - '4040:80'
+  #   image: 'koboldcpp:latest'
+  #   command: [ "/app/models/mistral-7b-v0.1.Q4_K_M.gguf", "80" ]
+  diskorbold:
+    build:
+      # context: /data/dockerSSD/diskorbold/
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - './memory:/app/memory'
+    container_name: diskorbold

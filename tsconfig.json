@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es2017",
+    "sourceMap": true,
+    "outDir": "./dist",
+    "baseUrl": "./",
+    "incremental": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true, //Web3
+    "strict": true,
+    "skipLibCheck": true,
+    "plugins": [{
+      "transform": "ts-auto-mock/transformer",
+      "cacheBetweenTests": false
+    }],
+    "paths": {
+      "@injection/*": ["src/dependencyInjection/*"],
+      "@contexts/*": ["src/context/*"],
+      "@shared/*": ["src/context/shared/*"],
+      "@config": ["src/context/shared/application/ConfigService"]
+    }
+  }
+}
