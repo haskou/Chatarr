@@ -16,6 +16,9 @@ export class TelegramClient implements MessengerClient {
 
   constructor() {}
 
+  public async getUsername(): Promise<string> {
+    return (await this.client.getMe()).username;
+  }
   /**
    * Load memory file
    */
@@ -37,9 +40,8 @@ export class TelegramClient implements MessengerClient {
    */
   private async save(): Promise<void> {
     Object.keys(this.channels).forEach((channelId) => {
-      this.channels[channelId].messages = this.channels[
-        channelId
-      ].messages?.slice(0, 100);
+      this.channels[channelId].messages =
+        this.channels[channelId].messages?.slice(-100);
     });
     await fs.mkdir(this.memoryPath, { recursive: true });
 
@@ -79,7 +81,11 @@ export class TelegramClient implements MessengerClient {
       isMentioned,
     };
   }
-  public async sendMessage(message: string, channelId: string): Promise<void> {
+  public async sendMessage(
+    message: string,
+    channelId: string,
+    botName: string,
+  ): Promise<void> {
     await this.client.sendMessage(channelId, message);
     this.channels[channelId].messages.push({
       channelId: channelId,
@@ -88,7 +94,7 @@ export class TelegramClient implements MessengerClient {
       isDM: this.channels[channelId].isDM,
       isMentioned: false,
       isReplied: false,
-      username: (await this.client.getMe()).username,
+      username: botName,
       replyAuthor: null,
       replyMesage: null,
     });

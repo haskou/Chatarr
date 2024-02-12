@@ -12,6 +12,10 @@ export interface Channel {
 export interface MessengerClient {
   channels: Record<string, Channel>;
   /**
+   * Get messenger client user name
+   */
+  getUsername(): Promise<string>;
+  /**
    * Connect to messenger client
    */
   connect(): Promise<MessengerClient>;
@@ -30,7 +34,11 @@ export interface MessengerClient {
    * @param message Message to send
    * @param channelId Channel id where the message will be sent
    */
-  sendMessage(message: string, channelId: string): Promise<void>;
+  sendMessage(
+    message: string,
+    channelId: string,
+    botName?: string,
+  ): Promise<void>;
   /**
    * Listen for new messages
    */

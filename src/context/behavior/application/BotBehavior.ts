@@ -47,7 +47,11 @@ export class BotBehavior {
   private async sendResponses(channelId: string, responses: string[]) {
     if (responses)
       for (const response of responses) {
-        await this.messengerClient.sendMessage(response, channelId);
+        await this.messengerClient.sendMessage(
+          response,
+          channelId,
+          this.character.name,
+        );
         this.lastResponse[channelId] = new Date();
         // Simulate writing speed
         await new Promise<void>((resolve) =>
@@ -69,11 +73,7 @@ export class BotBehavior {
   public async processMessage(message: Message): Promise<void> {
     this.debounceMessage(message.channelId, async () => {
       // Ignore own messages
-      if (
-        message.username
-          .toLocaleLowerCase()
-          .includes(this.character.name.toLocaleLowerCase())
-      )
+      if (message.username == (await this.messengerClient.getUsername()))
         return;
 
       if (message.content == 'stopLoop') {

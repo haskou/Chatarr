@@ -44,6 +44,9 @@ export class DiscordClient implements MessengerClient {
       .split(',')
       .map((c) => c.trim());
   }
+  public async getUsername(): Promise<string> {
+    return this.client.user.username;
+  }
   /**
    * Parse IDs into user names
    * @param text Text to parse strings from
