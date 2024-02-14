@@ -41,7 +41,7 @@ export class OpenRouterService implements AIProvider {
     messages.push({
       role: 'system',
       content:
-        `${SharedSettings.systemPrompt}${character.description}.${character.personality}\\n\\n${forcedMemory}\n\n${character.scenario}.\\nNow is ${datetime}.\\n`.replace(
+        `${SharedSettings.systemPrompt}${character.description}.${character.personality}${forcedMemory}\n\n${character.scenario}.Now is ${datetime}.\\n`.replace(
           /{{char}}/g,
           character.name,
         ),
