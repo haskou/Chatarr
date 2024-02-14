@@ -116,7 +116,7 @@ export class TelegramClient implements MessengerClient {
   public async listenMessages(): Promise<MessengerMessageEmitter> {
     const emitter = new MessengerMessageEmitter();
 
-    this.client.addListener('message', async (message) => {
+    this.client.addListener('text', async (message) => {
       if (!message.text || message.text == 'undefined') return;
       // Check if the message comes from a confinament channel
       const isDM = !message.group_chat_created;
