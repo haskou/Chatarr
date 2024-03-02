@@ -83,17 +83,8 @@ export class BotBehavior {
       )
         return;
 
-      if (message.content == 'stopLoop') {
-        const responses = await this.aiProvider.generateResponses(
-          this.character,
-          '',
-          [message],
-          [],
-          false,
-        );
-        await this.sendResponses(message.channelId, responses);
-        return;
-      }
+      // Ignore big messages
+      if (message.content.length > 300) return;
 
       // Set "Bot is writting" status on messenger client
       this.messengerClient.setIsTypping(message.channelId);
