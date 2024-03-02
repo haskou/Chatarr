@@ -11,11 +11,11 @@ services:
   #     - '4040:80'
   #   image: 'koboldcpp:latest'
   #   command: [ "/app/models/mistral-7b-v0.1.Q4_K_M.gguf", "80" ]
-  diskorbold:
+  chatarr:
     build:
-      # context: /data/dockerSSD/diskorbold/
+      # context: /data/dockerSSD/chatarr/
       context: .
       dockerfile: Dockerfile
     volumes:
       - './memory:/app/memory'
-    container_name: diskorbold
+    container_name: chatarr

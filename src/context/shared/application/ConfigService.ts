@@ -13,7 +13,7 @@ export class DiscordConfig {
     env: 'DISCORD_BOT_TOKEN',
     sensitive: true,
     nullable: process.env.MESSENGER_CLIENT == discordMessenger,
-    default: null,
+    default: undefined,
   })
   token: string;
 
@@ -22,7 +22,7 @@ export class DiscordConfig {
   //   format: String,
   //   env: 'DISCORD_CHANNEL_BORED_CHANNEL',
   //   nullable: false,
-  //   default: null,
+  //   default: undefined,
   // })
   // boredChannel: string;
 
@@ -31,7 +31,7 @@ export class DiscordConfig {
     format: String,
     env: 'DISCORD_CHANNEL_CONFINAMENT',
     nullable: true,
-    default: null,
+    default: undefined,
   })
   channelConfinament: string;
 
@@ -40,7 +40,7 @@ export class DiscordConfig {
     format: String,
     env: 'DISCORD_STATUS',
     nullable: true,
-    default: null,
+    default: undefined,
   })
   status: string;
 }
@@ -52,7 +52,7 @@ export class TelegramConfig {
     env: 'TELEGRAM_BOT_TOKEN',
     sensitive: true,
     nullable: process.env.MESSENGER_CLIENT == telegramMessenger,
-    default: null,
+    default: undefined,
   })
   token: string;
 
@@ -61,7 +61,7 @@ export class TelegramConfig {
   //   format: String,
   //   env: 'DISCORD_CHANNEL_BORED_CHANNEL',
   //   nullable: false,
-  //   default: null,
+  //   default: undefined,
   // })
   // boredChannel: string;
 
@@ -70,7 +70,7 @@ export class TelegramConfig {
     format: String,
     env: 'TELEGRAM_CHANNEL_CONFINAMENT',
     nullable: true,
-    default: null,
+    default: undefined,
   })
   channelConfinament: string;
 }
@@ -93,7 +93,7 @@ export class OpenRouterConfig {
     env: 'OPENROUTER_API_KEY',
     senseitive: true,
     nullable: process.env.AI_PROVIDER == openRouterProvider,
-    default: null,
+    default: undefined,
   })
   apiKey: string;
 
@@ -102,7 +102,7 @@ export class OpenRouterConfig {
     format: String,
     env: 'OPENROUTER_MODEL',
     nullable: process.env.AI_PROVIDER == openRouterProvider,
-    default: null,
+    default: undefined,
   })
   model: string;
 }
@@ -113,7 +113,7 @@ export class BotPersonalityConfig {
     format: String,
     env: 'BOT_CHARACTER_CARD_PATH',
     nullable: false,
-    default: null,
+    default: undefined,
   })
   characterPath: string;
 
@@ -157,7 +157,7 @@ export class Config {
     format: String,
     env: 'MESSENGER_CLIENT',
     nullable: false,
-    default: null,
+    default: undefined,
     enum: [discordMessenger, telegramMessenger],
   })
   messengerClient: string;
@@ -167,7 +167,7 @@ export class Config {
     format: String,
     env: 'AI_PROVIDER',
     nullable: false,
-    default: null,
+    default: undefined,
     enum: [openRouterProvider, koboldProvider],
   })
   aiProvider: string;
