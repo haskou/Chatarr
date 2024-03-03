@@ -49,17 +49,18 @@ export class OpenRouterService implements AIProvider {
 
     // Parse history messages
     historyMessages.forEach((message) => {
-      let historyMessage = '';
       // Give reply context
       if (isReplied)
-        historyMessage = `> @${message.replyAuthor}: ${message.replyMesage}\n`;
-      historyMessage += `${message.content}`;
+        messages.push({
+          role: 'user',
+          name: message.replyAuthor,
+          content: `${message.replyMesage.trim()}`,
+        });
 
       messages.push({
         role: 'user',
         name: message.username,
-        // content: `${message.date.toISOString()} ${historyMessage.trim()}`,
-        content: `${historyMessage.trim()}`,
+        content: `${message.content.trim()}`,
       });
     });
 
