@@ -30,7 +30,6 @@ export class OpenAIService implements AIProvider {
     forcedMemory: string,
     historyMessages: Message[],
     usernames: string[],
-    isReplied?: boolean,
   ): Promise<string[]> {
     const messages = [];
 
@@ -49,7 +48,7 @@ export class OpenAIService implements AIProvider {
     // Parse history messages
     historyMessages.forEach((message) => {
       // Give reply context
-      if (isReplied)
+      if (message.replyMesage)
         messages.push({
           role: 'user',
           name: message.replyAuthor,
