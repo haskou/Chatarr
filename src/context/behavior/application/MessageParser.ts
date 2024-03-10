@@ -16,6 +16,8 @@ export abstract class MessageParser {
     breakLines?: boolean,
   ): string[] {
     const parsedText = response
+      // Remove initial ####
+      .replace(/^\#{4}/, '')
       // Remove bot name when it talks
       .replace(new RegExp('\n?s?@?' + botName + ':s?'), '')
       // Remove user name at givin turn

@@ -34,7 +34,7 @@ export class YouService implements AIProvider {
 
   constructor() {}
 
-  generateConceptualHistory(_memoryPrompt: string): Promise<string> {
+  generateConceptualHistory(): Promise<string> {
     throw 'Not implemented.';
   }
 
@@ -98,7 +98,7 @@ export class YouService implements AIProvider {
       });
     });
 
-    const prompt = this.formatPrompt(messages);
+    const prompt = this.formatPrompt(messages, character);
 
     const data: YouRequest = {
       ...this.defaultParameters,
@@ -106,6 +106,8 @@ export class YouService implements AIProvider {
         q: prompt,
       },
     };
+
+    console.log(data);
 
     const response = await fetch(
       `${this.generateEndpoint}?selectedChatMode=custom&safeSearch=Off&selectedAIModel=${data.selectedAIModel}`,
@@ -178,15 +180,18 @@ export class YouService implements AIProvider {
     };
   }
 
-  private formatPrompt(messages: Record<string, any>) {
+  private formatPrompt(
+    messages: Record<string, any>,
+    character: CharacterCard,
+  ) {
     return (
       messages
         .map((message) => {
-          return `${message['role'].toUpperCase()} (${message['name']}): ${
-            message['content']
-          }`;
+          return `${message.role.toUpperCase()} ${
+            message.name ? `(${message.name})` : ''
+          }: ${message['content']}`;
         })
-        .join('\n') + '\nAssistant:\n'
+        .join('\n') + `\n${character.name}: `
     );
   }
 
