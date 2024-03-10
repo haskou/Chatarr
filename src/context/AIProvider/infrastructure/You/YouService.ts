@@ -45,9 +45,7 @@ export class YouService implements AIProvider {
     usernames: string[],
   ): Promise<string[]> {
     const messages = [];
-
-    await this.getCookies();
-    const cookies = this.cookies;
+    const cookies = await this.getCookies();
 
     if (!cookies) throw Error('Could not get cookies.');
 
@@ -200,7 +198,7 @@ export class YouService implements AIProvider {
 
   async getCookies() {
     if (!this.cookies || this.premiumRequests >= 5) {
-      this.cookies = await this.createAccount();
+      await this.createAccount();
       this.premiumRequests = 0;
     }
     this.premiumRequests += 1;
