@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 
 const koboldProvider = 'Kobold';
 const openRouterProvider = 'OpenRouter';
+const youProvider = 'You';
 const discordMessenger = 'Discord';
 const telegramMessenger = 'Telegram';
 
@@ -107,6 +108,17 @@ export class OpenRouterConfig {
   model: string;
 }
 
+export class YouConfig {
+  @Property({
+    doc: `You.com models: src/context/AIProvider/infrastructure/You.const.ts`,
+    format: String,
+    env: 'YOU_MODEL',
+    nullable: process.env.AI_PROVIDER == youProvider,
+    default: 'gpt_4',
+  })
+  model: string;
+}
+
 export class BotPersonalityConfig {
   @Property({
     doc: `Bot character card path`,
@@ -145,6 +157,9 @@ export class Config {
 
   @Property(KoboldConfig)
   kobold: KoboldConfig;
+
+  @Property(YouConfig)
+  you: YouConfig;
 
   @Property(OpenRouterConfig)
   openRouter: OpenRouterConfig;

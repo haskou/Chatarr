@@ -1,12 +1,12 @@
 # Chatarr
 
-Discord/Telegram chatbot with [KoboldcAI](https://github.com/KoboldAI/KoboldAI-Client)/[Koboldcpp](https://github.com/LostRuins/koboldcpp)/[OpenRouter](https://openrouter.ai/) integration. 
+Discord/Telegram chatbot with [KoboldcAI](https://github.com/KoboldAI/KoboldAI-Client)/[Koboldcpp](https://github.com/LostRuins/koboldcpp)/[OpenRouter](https://openrouter.ai/) integration.
 
 ## TODO LIST
+
 - Docker documentation
 - This README.md
 - Improve memory (currently doesn't writte new memories)
-
 
 ## Environment variables
 
@@ -28,9 +28,12 @@ You can both create a `.env` file on the root of this project from `.env.example
 | KOBOLD_ADDRESS                | Kobold server address                                                                                  |
 | OPENROUTER_API_KEY            | OpenRouter API key                                                                                     |
 | OPENROUTER_MODEL              | OpenRouter model (https://openrouter.ai/docs#models)                                                   |
+| YOU_MODEL                     | You.com models: src/context/AIProvider/infrastructure/You.const.ts                                     |
 
 # Start the bot
+
 Start KoboldAI/KoboldAICpp (if you use it) and then:
+
 ```
 pnpm start
 ```
