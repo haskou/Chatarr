@@ -6,9 +6,11 @@ import { KoboldService } from '@contexts/AIProvider/infrastructure/Kobold/Kobold
 import { MessengerClient } from '@contexts/messengerClient/domain/MessengerClient';
 import { OpenRouterService } from '@contexts/AIProvider/infrastructure/OpenRouter/OpenRouterService';
 import { OpenAIService } from '@contexts/AIProvider/infrastructure/OpenAI/OpenAIService';
+import { YouService } from '@contexts/AIProvider/infrastructure/You/YouService';
 
 container.register<MessengerClient>('Discord', DiscordClient);
 container.register<MessengerClient>('Telegram', TelegramClient);
 container.register<AIProvider>('Kobold', KoboldService);
 container.register<AIProvider>('OpenRouter', OpenRouterService);
 container.register<AIProvider>('OpenAI', OpenAIService);
+container.register<AIProvider>('You', YouService);

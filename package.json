@@ -28,9 +28,11 @@
     "node-telegram-bot-api": "^0.64.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.1",
+    "set-cookie-parser": "^2.6.0",
     "tiny-typed-emitter": "^2.1.0",
     "ts-convict": "^1.1.0",
-    "tsyringe": "^4.7.0"
+    "tsyringe": "^4.7.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
@@ -40,7 +42,9 @@
     "@types/jest": "^29.5.2",
     "@types/node": "^20.10.5",
     "@types/node-telegram-bot-api": "^0.64.2",
+    "@types/set-cookie-parser": "^2.4.7",
     "@types/supertest": "^2.0.12",
+    "@types/uuid": "^9.0.8",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "eslint": "^8.42.0",
