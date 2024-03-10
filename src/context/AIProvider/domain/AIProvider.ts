@@ -18,5 +18,5 @@ export interface AIProvider {
     isReplied?: boolean,
   ): Promise<string[]>;
 
-  generateConceptualHistory(memoryPrompt: string): Promise<string>;
+  generateConceptualHistory?(memoryPrompt: string): Promise<string>;
 }
