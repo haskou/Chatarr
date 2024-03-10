@@ -11,6 +11,7 @@ export class TelegramClient implements MessengerClient {
   public readonly memoryPath = './memory/';
   private readonly config = new ConfigService().getConfig();
   private confinamentChannels: string[];
+  private isBotTyping: boolean = false;
   public client: TelegramBot;
   public channels: Record<string, Channel>;
 
@@ -66,12 +67,13 @@ export class TelegramClient implements MessengerClient {
     let replyAuthor = '';
     if (isReplied && message.reply_to_message.text) {
       replyMessage = message.reply_to_message.text;
-      replyAuthor = message.reply_to_message.from.username;
+      replyAuthor =
+        message.reply_to_message.from.username || message.from.id.toString();
     }
 
     return {
       channelId: message.chat.id.toString(),
-      username: message.from.username,
+      username: message.from.username || message.from.id.toString(),
       content: message.text,
       date: new Date(),
       isDM,
@@ -99,6 +101,7 @@ export class TelegramClient implements MessengerClient {
       replyMesage: null,
     });
     this.save();
+    this.isBotTyping = false;
   }
   public async connect(): Promise<MessengerClient> {
     this.client = new TelegramBot(this.config.telegram.token);
@@ -158,11 +161,15 @@ export class TelegramClient implements MessengerClient {
     return this.channels[channelId].messages?.slice(maxHistory * -1) || [];
   }
   public async setIsTypping(channelId: string): Promise<void> {
+    this.isBotTyping = true;
     this.client.sendChatAction(channelId, 'typing');
+    setTimeout(() => {
+      this.isBotTyping = false;
+    }, 3000);
   }
   public async isTypping(): Promise<boolean> {
     // Telegram does not support this
     // Asume is always typping
-    return false;
+    return this.isBotTyping;
   }
 }

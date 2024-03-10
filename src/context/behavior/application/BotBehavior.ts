@@ -83,6 +83,9 @@ export class BotBehavior {
       )
         return;
 
+      // Ignore messages between users
+      if (message.replyMesage && !message.isReplied) return;
+
       // Ignore big messages
       if (message.content.length > 300) return;
 
