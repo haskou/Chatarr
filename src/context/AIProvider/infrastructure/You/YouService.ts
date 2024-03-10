@@ -198,7 +198,7 @@ export class YouService implements AIProvider {
 
   async getCookies() {
     if (!this.cookies || this.premiumRequests >= 5) {
-      this.cookies = await this.createAccount();
+      await this.createAccount();
       this.premiumRequests = 0;
     }
     this.premiumRequests += 1;
