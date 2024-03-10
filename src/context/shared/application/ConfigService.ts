@@ -112,8 +112,8 @@ export class YouConfig {
   @Property({
     doc: `You.com models: src/context/AIProvider/infrastructure/You.const.ts`,
     format: String,
-    env: 'OPENROUTER_MODEL',
-    nullable: process.env.AI_PROVIDER == openRouterProvider,
+    env: 'YOU_MODEL',
+    nullable: process.env.AI_PROVIDER == youProvider,
     default: 'gpt_4',
   })
   model: string;
