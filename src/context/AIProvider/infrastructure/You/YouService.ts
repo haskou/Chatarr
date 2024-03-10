@@ -34,6 +34,10 @@ export class YouService implements AIProvider {
 
   constructor() {}
 
+  generateConceptualHistory(_memoryPrompt: string): Promise<string> {
+    throw 'Not implemented.';
+  }
+
   async generateResponses(
     character: CharacterCard,
     forcedMemory: string,
