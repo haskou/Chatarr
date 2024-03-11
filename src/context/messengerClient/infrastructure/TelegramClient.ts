@@ -65,7 +65,7 @@ export class TelegramClient implements MessengerClient {
     // Get reply message
     let replyMessage = '';
     let replyAuthor = '';
-    if (isReplied && message.reply_to_message.text) {
+    if (message.reply_to_message.text) {
       replyMessage = message.reply_to_message.text;
       replyAuthor =
         message.reply_to_message.from.username || message.from.id.toString();
