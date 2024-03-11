@@ -45,29 +45,11 @@ export class YouService implements AIProvider {
     usernames: string[],
   ): Promise<string[]> {
     const messages = [];
-    const cookies = await this.getCookies();
+    await this.authenticate();
 
-    if (!cookies) throw Error('Could not get cookies.');
+    if (!this.cookies) throw Error('Could not get cookies.');
 
-    let cookieString = this.getCookieString(cookies);
-    let headers = this.getHeaders(cookieString);
-
-    // Get pro mode call to set cookies
-    const proResponse = await fetch(this.getProStateEndpoint, {
-      headers,
-    });
-
-    const setCookies = setCookie.parse(proResponse as any);
-
-    Object.entries(setCookies).map(([key, value]) => {
-      if (cookies.hasOwnProperty(key)) {
-        cookies[key] = String(value); // Convert value to string
-      }
-    });
-    cookies['ai_model'] = this.defaultParameters.selectedAIModel;
-
-    cookieString = this.getCookieString(cookies);
-    headers = this.getHeaders(cookieString);
+    this.cookies.ai_model = this.defaultParameters.selectedAIModel;
 
     const datetime =
       historyMessages[historyMessages.length - 1].date.toISOString();
@@ -98,12 +80,10 @@ export class YouService implements AIProvider {
       });
     });
 
-    const prompt = this.formatPrompt(messages);
-
     const data: YouRequest = {
       ...this.defaultParameters,
       ...{
-        q: prompt,
+        q: JSON.stringify(prompt),
       },
     };
 
@@ -111,7 +91,7 @@ export class YouService implements AIProvider {
       `${this.generateEndpoint}?selectedChatMode=custom&safeSearch=Off&selectedAIModel=${data.selectedAIModel}`,
       {
         method: 'POST',
-        headers,
+        headers: this.getHeaders(),
         body: JSON.stringify(data),
       },
     );
@@ -151,13 +131,13 @@ export class YouService implements AIProvider {
     return responses;
   }
 
-  private getHeaders(cookies: string): Headers {
+  private getHeaders(): Headers {
     return {
       authority: 'you.com',
       accept: 'text/event-stream',
       'accept-language': 'en-US,en;q=0.9,es;q=0.8,ca;q=0.7,ru;q=0.6',
       'cache-control': 'max-age=0',
-      cookie: cookies,
+      cookie: this.getCookieString(this.cookies),
       dnt: '1',
       'sec-ch-ua': `'Chromium';v='122', 'Not(A:Brand';v='24', 'Google Chrome';v='122'`,
       'sec-ch-ua-arch': 'x86',
@@ -190,19 +170,31 @@ export class YouService implements AIProvider {
     );
   }
 
+  private async setProStatusCookies(headers: Headers) {
+    const proResponse = await fetch(this.getProStateEndpoint, {
+      headers,
+    });
+
+    Object.entries(setCookie.parse(proResponse as any)).map(([key, value]) => {
+      if (this.cookies.hasOwnProperty(key)) {
+        this.cookies[key] = String(value);
+      }
+    });
+  }
+
   private getCookieString(cookies: Cookies) {
     return Object.entries(cookies)
       .map(([key, value]) => `${key}=${value}`)
       .join('; ');
   }
 
-  async getCookies() {
+  private async authenticate() {
     if (!this.cookies || this.premiumRequests >= 5) {
       await this.createAccount();
+      await this.setProStatusCookies(this.getHeaders());
       this.premiumRequests = 0;
     }
     this.premiumRequests += 1;
-    return this.cookies;
   }
 
   private getSDK() {
@@ -243,7 +235,7 @@ export class YouService implements AIProvider {
     };
   }
 
-  private async createAccount(): Promise<Cookies> {
+  private async createAccount(): Promise<void> {
     const user_uuid = uuid();
 
     const response = await fetch(this.createAccountUrl, {
@@ -256,15 +248,15 @@ export class YouService implements AIProvider {
       }),
     });
 
-    if (!response.ok) {
-      return {};
-    } else {
-      const session = (await response.json())['data'];
+    if (response.ok) {
+      const dataJson = await response.json();
+      const session = dataJson.data;
+
       this.cookies = {
-        stytch_session: session['session_token'],
-        ydc_stytch_session: session['session_token'],
-        stytch_session_jwt: session['session_jwt'],
-        ydc_stytch_session_jwt: session['session_jwt'],
+        stytch_session: session.session_token,
+        ydc_stytch_session: session.session_token,
+        stytch_session_jwt: session.session_jwt,
+        ydc_stytch_session_jwt: session.session_jwt,
         safesearch_guest: 'Off',
         you_subscription: 'freemium',
         uuid_guest: uuid(),
